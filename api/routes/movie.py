@@ -23,7 +23,7 @@ def exact_movie(movie_id):
     return jsonify(movie.to_dict())
 
 # Добавляет и удаляет фильм из избранного
-@movie_bp.route("/add_remove_favorite/<int:movie_id>", methods=["POST"])
+@movie_bp.route("/add_remove_favorite/<int:movie_id>")
 @login_required
 def add_favorite(movie_id):
     movie = Movie.query.get_or_404(movie_id)
@@ -35,16 +35,16 @@ def add_favorite(movie_id):
     db.session.commit()
     return jsonify({"message":"Фильм добавлен в избранное"})
 
-# Проверка добовлен ли в избранное
+# Проверка добовлен ли в избранное!!!
 @movie_bp.route("/is_favorite/<int:movie_id>", methods=["GET"])
 @login_required
 def is_favorite(movie_id):
     movie = Movie.query.get_or_404(movie_id)
     is_fav = movie in current_user.favorite_movies
-    return jsonify({"favorite": is_fav})
+    return({"favorite": is_fav})
     
 # Выводит все избранные фильмы авторизированного юзера
-@movie_bp.route("/favorites")
+@movie_bp.route("/favorites", methods=["POST"])
 @login_required
 def favorites():
     movies = current_user.favorite_movies
@@ -52,7 +52,7 @@ def favorites():
     return jsonify(result)
 
 # Добавляет и удаляет фильм из вочлиста
-@movie_bp.route("/add_remove_watchlist/<int:movie_id>", methods=["POST"])
+@movie_bp.route("/add_remove_watchlist/<int:movie_id>")
 @login_required
 def add_remove_watchlist(movie_id):
     movie = Movie.query.get_or_404(movie_id)
@@ -64,15 +64,13 @@ def add_remove_watchlist(movie_id):
     db.session.commit()
     return jsonify({"message": "Фильм добавлен в список"})
 
-
 # Проверка добовлен ли в watchlist
 @movie_bp.route("/is_watchlist/<int:movie_id>", methods=["GET"])
 @login_required
 def is_watchlisted(movie_id):
     movie = Movie.query.get_or_404(movie_id)
     is_watchlisted = movie in current_user.watchlist
-    return jsonify({"watchlist": is_watchlisted})
-
+    return({"favorite": is_watchlisted})
 
 # Выводит все фильмы из watchlist'а юзера 
 @movie_bp.route("/watchlist")

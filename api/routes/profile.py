@@ -4,7 +4,7 @@ from flask_login import login_required, current_user
 
 profile_bp = Blueprint("profile", __name__, url_prefix="/api")
 
-
+# Выводит все данные о пользователе
 @profile_bp.route("/profile")
 @login_required
 def profile():
