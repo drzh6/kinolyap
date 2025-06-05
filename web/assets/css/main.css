@@ -1,0 +1,70 @@
+/* assets/css/main.css */
+@import 'tailwindcss';
+@import '@nuxt/ui';
+
+@tailwind base;
+@tailwind components;
+
+:root {
+	--ui-background: #f4f8ff;
+	--ui-text: #1e1e1e;
+
+	--ui-primary: #101828;
+	--ui-secondary: #6b7280;
+	--ui-primaryHover: #2563eb;
+	--ui-neutral: #007bff;
+	--ui-accent: #ff637e;
+
+	--ui-success: #10b981;
+	--ui-warning: #f59e0b;
+	--ui-error: #ff2424;
+	--ui-info: #3b82f6;
+	--ui-test: #5f1f95;
+	--ui-border: #57534e;
+
+	--ui-button: var(--ui-primary);
+}
+
+.dark {
+	--ui-background: #27272a;
+	--ui-text: #e0e1dd;
+
+	--ui-primary: #c8ad80;
+	--ui-secondary: #4C10AE;
+	--ui-primaryHover: #a8c0db;
+	--ui-neutral: #3b82f6;
+	--ui-accent: #ff637e;
+
+	--ui-success: #34d399;
+	--ui-warning: #fbbf24;
+	--ui-error: #ff2424;
+	--ui-info: #60a5fa;
+	--ui-test: #5f1f95;
+	--ui-border: #57534e;
+
+	--ui-button: var(--ui-primary);
+}
+
+@tailwind utilities;
+
+html {
+	overflow-y: scroll;
+}
+
+body {
+	font-family: 'Inter', sans-serif;
+	background: var(--ui-background);
+	color: var(--ui-text);
+	padding: 0 !important;
+	margin: 0;
+}
+
+.router-link-active {
+	@apply text-[var(--ui-primary)];
+}
+
+
+.test-colors {
+	color: #c7ae7c;
+	background: #373539
+}
