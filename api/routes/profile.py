@@ -5,16 +5,17 @@ from flask_login import login_required, current_user
 profile_bp = Blueprint("profile", __name__, url_prefix="/api")
 
 
-@profile_bp.route("/profile", methods=['GET'])
+@profile_bp.route("/profile")
 @login_required
 def profile():
+    user = current_user
     return jsonify({
-        "id": current_user.id,
-        "login": current_user.login,
-        "username": current_user.username,
-        "email": current_user.email,
-        "date_joined": current_user.date_joined.isoformat()
-    })
+        "id": user.id,
+        "email": user.email,
+        "login": user.login,
+        "username": user.username,
+        "date_joined": user.date_joined
+        })
 
 
 @profile_bp.route("/me", methods=["POST"])
@@ -40,6 +41,27 @@ def profile_change():
     data = request.json
     username = data.get("name")
     return jsonify({"username": username})
+
+
+@profile_bp.route("/reviews")
+@login_required
+def user_reviews():
+    reviews = current_user.review
+    result = []
+    for review in reviews:
+        result.append({
+            "movie_id": review.movie_id,
+            "text": review.review_text,
+            "rating": review.review_rating,
+            "date": review.review_date.isoformat()
+        })
+    return jsonify(result)
+
+
+
+
+
+
 
 
 

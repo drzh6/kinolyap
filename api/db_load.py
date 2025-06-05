@@ -2,9 +2,9 @@
 
 import json
 
-from .app import app
-from .models import Movie
-from .extensions import db
+from app import app
+from models import Movie
+from extensions import db
 
 
 with app.app_context():
