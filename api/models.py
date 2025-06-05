@@ -24,14 +24,14 @@ class User(db.Model, UserMixin):
     favorite_movies = db.relationship("Movie", secondary="favorites")
     watchlist = db.relationship("Movie", secondary="watchlist")
     review = db.relationship("Review", backref="author")
-    following = db.relationship(
-        "User",
-        secondary=subscriptions,
-        primaryjoin=(subscriptions.c.follower_id == id),
-        secondaryjoin=(subscriptions.c.followed_id == id),
-        backref=db.backref('followers', lazy='dynamic'),
-        lazy='dynamic'
-    )
+    # following = db.relationship(
+    #     "User",
+    #     secondary=subscriptions,
+    #     primaryjoin=(subscriptions.c.follower_id == id),
+    #     secondaryjoin=(subscriptions.c.followed_id == id),
+    #     backref=db.backref('followers', lazy='dynamic'),
+    #     lazy='dynamic'
+    # )
 
     
     def to_dict(self):
