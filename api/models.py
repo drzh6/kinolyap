@@ -1,6 +1,7 @@
 from flask_login import UserMixin
 from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
+from sqlalchemy.dialects.postgresql import JSON
 
 from .extensions import db
 
@@ -56,29 +57,51 @@ class User(db.Model, UserMixin):
 
 class Movie(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(256),  nullable=False)
-    description = db.Column(db.Text, nullable=True)
-    genre = db.Column(db.String(100), nullable=False)
+    kinopoisk_id = db.Column(db.Integer, unique=True, nullable=False)
+    imdb_id = db.Column(db.String(20), unique=True, nullable=True)
+    name_ru = db.Column(db.String(256), nullable=False)
+    name_en = db.Column(db.String(256), nullable=True)
+    name_original = db.Column(db.String(256), nullable=True)
+    countries = db.Column(JSON, nullable=True)
+    genres = db.Column(JSON, nullable=True)
+    rating_kinopoisk = db.Column(db.Float, nullable=True)
+    rating_imdb = db.Column(db.Float, nullable=True)
     year = db.Column(db.Integer, nullable=False)
-    rating = db.Column(db.Float, nullable=False)
-    poster_url = db.Column(db.String(256))
-    director = db.Column(db.String(100), nullable=False)
+    type = db.Column(db.String(50), nullable=False)
+    poster_url = db.Column(db.String(512), nullable=True)
+    poster_url_preview = db.Column(db.String(512), nullable=True)
+    cover_url = db.Column(db.String(512), nullable=True)
+    logo_url = db.Column(db.String(512), nullable=True)
+    description = db.Column(db.Text, nullable=True)
+    rating_age_limits = db.Column(db.String(20), nullable=True)
+    director = db.Column(db.String(100), nullable=True)
 
 
     def to_dict(self):
         return {
             "id": self.id,
-            "title": self.title,
-            "description": self.description,
-            "genre": self.genre,
+            "kinopoiskId": self.kinopoisk_id,
+            "imdbId": self.imdb_id,
+            "nameRu": self.name_ru,
+            "nameEn": self.name_en,
+            "nameOriginal": self.name_original,
+            "countries": self.countries,
+            "genres": self.genres,
+            "ratingKinopoisk": self.rating_kinopoisk,
+            "ratingImdb": self.rating_imdb,
             "year": self.year,
-            "rating": self.rating,
-            "poster_url": self.poster_url,
+            "type": self.type,
+            "posterUrl": self.poster_url,
+            "posterUrlPreview": self.poster_url_preview,
+            "coverUrl": self.cover_url,
+            "logoUrl": self.logo_url,
+            "description": self.description,
+            "ratingAgeLimits": self.rating_age_limits,
             "director": self.director
         }
-    
+
     def __repr__(self):
-        return f"<Movie {self.title}>"
+        return f"<Movie {self.name_ru} ({self.year})>"
 
 
 class Review(db.Model):
