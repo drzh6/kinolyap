@@ -1,9 +1,11 @@
 // stores/profileStore.ts
+import axios from "axios";
 import { defineStore } from "pinia";
 import { ref } from "vue";
 
 export const useProfileStore = defineStore("profile", () => {
     const profile = ref<null | {
+        id: number;
         username: string;
         login: string;
         email: string;
@@ -27,6 +29,7 @@ export const useProfileStore = defineStore("profile", () => {
             }
 
             profile.value = await res.json();
+
         } catch (err: any) {
             error.value = err.message || "Неизвестная ошибка";
             profile.value = null;
@@ -38,7 +41,6 @@ export const useProfileStore = defineStore("profile", () => {
     async function updateProfile(data: Partial<{ username: string; password: string }>) {
         loading.value = true;
         error.value = "";
-
         try {
             const res = await fetch("http://localhost:5000/api/profile_update", {
                 method: "POST",
@@ -46,11 +48,9 @@ export const useProfileStore = defineStore("profile", () => {
                 credentials: "include",
                 body: JSON.stringify(data),
             });
-
             if (!res.ok) {
                 throw new Error("Не удалось обновить профиль");
             }
-
             const updated = await res.json();
             profile.value = { ...profile.value, ...updated };
         } catch (err: any) {
@@ -66,5 +66,7 @@ export const useProfileStore = defineStore("profile", () => {
         error,
         fetchProfile,
         updateProfile,
+
     };
+
 });

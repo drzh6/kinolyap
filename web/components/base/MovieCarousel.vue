@@ -5,11 +5,11 @@ defineProps<{
   title: string
   movies: Array<{
     id: number
-    title: string
+    name_ru: string
     poster_url: string
-    rating: number
+    rating_kinopoisk: number
     year: number
-    genre: string
+    genres: string
   }>
   getPreferredGenre: (genre: string) => string
 }>()
@@ -17,7 +17,7 @@ defineProps<{
 
 <template>
   <div v-if="movies.length" class="w-full max-w-[1280px] mx-auto bg-background h-full py-8">
-    <p class="text-text text-lg font-semibold mb-8">{{ title }}</p>
+    <p class="text-text text-lg font-semibold mb-8">{{ name_ru }}</p>
     <NuxtCarousel
         v-slot="{ item }"
         :items="movies"

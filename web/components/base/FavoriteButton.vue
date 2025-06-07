@@ -29,7 +29,7 @@ const fetchIsFavorite = async () => {
 
 const fetchFavorite = async () => {
   try {
-    const res = await axios.post(`http://localhost:5000/api/add_remove_favorite/${props.movieId}`, {}, { withCredentials: true });
+    const res = await axios.get(`http://localhost:5000/api/add_remove_favorite/${props.movieId}`, { withCredentials: true });
     if (res.data.status === 'added') {
       isFavorite.value = true
     } else if (res.data.status === 'removed') {

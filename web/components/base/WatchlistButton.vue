@@ -31,7 +31,7 @@ const fetchIsWatchlist = async () => {
 
 const fetchWatchlist = async () => {
   try {
-    const res = await axios.post(`http://localhost:5000/api/add_remove_watchlist/${props.movieId}`, {}, { withCredentials: true })
+    const res = await axios.get(`http://localhost:5000/api/add_remove_watchlist/${props.movieId}`, { withCredentials: true })
     if (res.data.status === 'added') {
       isWatchlist.value = true
     } else if (res.data.status === 'removed') {

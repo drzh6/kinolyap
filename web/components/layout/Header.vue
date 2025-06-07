@@ -37,7 +37,7 @@ const auth = useAuthStore();
           <div v-else>
             <template v-if='auth.isLoggedIn()'>
               <NuxtLink to='/profile'>
-                  <NuxtButton variant="ghost" size="xl" color='text' icon="tabler:user">Профиль</NuxtButton>
+                  <NuxtButton variant="ghost" size="xl" color='text' icon="fxemoji:wolfface">Профиль</NuxtButton>
               </NuxtLink>
             </template>
             <template v-else>
