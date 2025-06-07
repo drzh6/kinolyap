@@ -8,7 +8,7 @@ from .extensions import db
 subscriptions = db.Table(
     "subscriptions",
     db.Column("follower_id", db.Integer, db.ForeignKey("user.id"), primary_key=True),
-    db.Column("fillowed_id", db.Integer, db.ForeignKey("user.id"), primary_key=True),
+    db.Column("followed_id", db.Integer, db.ForeignKey("user.id"), primary_key=True),
     db.Column("time_followed", db.DateTime, default=datetime.now)
     )
 
@@ -21,18 +21,19 @@ class User(db.Model, UserMixin):
     password = db.Column(db.String(250), nullable=False)
     date_joined = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
     last_joined = db.Column(db.DateTime, default=datetime.now, nullable=False)
+    avatar = db.Column(db.Integer, nullable=False)
 
     favorite_movies = db.relationship("Movie", secondary="favorites")
     watchlist = db.relationship("Movie", secondary="watchlist")
     review = db.relationship("Review", backref="author")
-    # following = db.relationship(
-    #     "User",
-    #     secondary=subscriptions,
-    #     primaryjoin=(subscriptions.c.follower_id == id),
-    #     secondaryjoin=(subscriptions.c.followed_id == id),
-    #     backref=db.backref('followers', lazy='dynamic'),
-    #     lazy='dynamic'
-    # )
+    following = db.relationship(
+        "User",
+        secondary=subscriptions,
+        primaryjoin=(subscriptions.c.follower_id == id),
+        secondaryjoin=(subscriptions.c.followed_id == id),
+        backref="followers",
+        lazy="dynamic"
+    )
 
     
     def to_dict(self):
@@ -42,7 +43,8 @@ class User(db.Model, UserMixin):
             "login": self.login,
             "username": self.username,
             "date_joined": self.date_joined.isoformat(),
-            "last_joined": self.last_joined.isoformat()
+            "last_joined": self.last_joined.isoformat(),
+            "avatar": self.avatar
         }
 
     def set_password(self, password):
@@ -50,9 +52,20 @@ class User(db.Model, UserMixin):
 
     def check_password(self, password):
             return check_password_hash(self.password, password)
+    
     def __repr__(self):
-
         return f"<User {self.login}>"
+
+    def follow(self, user):
+        if user not in self.following:
+            self.following.append(user)
+
+    def unfollow(self, user):
+        if user in self.following:
+            self.following.remove(user)
+
+    def is_following(self, user):
+        return self.following.filter(subscriptions.c.followed_id == user.id).count() > 0
 
 
 class Movie(db.Model):
@@ -62,8 +75,8 @@ class Movie(db.Model):
     name_ru = db.Column(db.String(256), nullable=False)
     name_en = db.Column(db.String(256), nullable=True)
     name_original = db.Column(db.String(256), nullable=True)
-    countries = db.Column(JSON, nullable=True)
-    genres = db.Column(JSON, nullable=True)
+    countries = db.Column(db.String(256), nullable=True)
+    genres = db.Column(db.String(256), nullable=True)
     rating_kinopoisk = db.Column(db.Float, nullable=True)
     rating_imdb = db.Column(db.Float, nullable=True)
     year = db.Column(db.Integer, nullable=False)
@@ -74,7 +87,9 @@ class Movie(db.Model):
     logo_url = db.Column(db.String(512), nullable=True)
     description = db.Column(db.Text, nullable=True)
     rating_age_limits = db.Column(db.String(20), nullable=True)
-    director = db.Column(db.String(100), nullable=True)
+    director_name_ru = db.Column(db.String(256), nullable=True)
+    director_name_en = db.Column(db.String(256), nullable=True)
+    director_poster_url = db.Column(db.String(512), nullable=True)
 
 
     def to_dict(self):
@@ -97,7 +112,9 @@ class Movie(db.Model):
             "logoUrl": self.logo_url,
             "description": self.description,
             "ratingAgeLimits": self.rating_age_limits,
-            "director": self.director
+            "directorNameRu": self.director_name_ru,
+            "directorNameEn": self.director_name_en,
+            "directorPosterUrl": self.director_poster_url
         }
 
     def __repr__(self):
