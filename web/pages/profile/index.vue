@@ -14,6 +14,23 @@ onMounted(() => {
   profileStore.fetchProfile();
 });
 
+const avatars = [
+  'fxemoji:wolfface',
+  'fxemoji:pandaface',
+  'fxemoji:hampster',
+  'fxemoji:koala',
+  'fxemoji:tiger',
+  'fxemoji:foxwry',
+  'fxemoji:cat',
+  'fxemoji:bear',
+  'fxemoji:monkeyface',
+  'fxemoji:chicken',
+  'fxemoji:horseface',
+  'fxemoji:bunny',
+  'fxemoji:boar',
+  'fxemoji:dog'
+];
+
 </script>
 
 <template>

@@ -1,13 +1,15 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
+import axios from 'axios'
 
 interface Movie {
     id: number
-    title: string
+    nameRu: string
     year: number
-    rating: number
-    poster_url: string
-    director: string
+    ratingKinopoisk: number
+    posterUrl: string
+    directorNameEn: string
+    description: string
 }
 
 export const useMovieStore = defineStore('movieStore', () => {
@@ -16,8 +18,10 @@ export const useMovieStore = defineStore('movieStore', () => {
 
     async function fetchMovies() {
         if (loaded.value) return
-        const res = await fetch('http://localhost:5000/api/movies')
-        movies.value = await res.json()
+        const res = await axios.get('http://localhost:5000/api/movies', {
+            withCredentials: true
+        })
+        movies.value = await res.data
         loaded.value = true
     }
 

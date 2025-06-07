@@ -10,19 +10,19 @@ onMounted(() => {
 })
 
 const carouselTopMovies = computed(() =>
-    store.movies.filter((movie) => movie.id >= 1 && movie.id <= 15)
+    store.movies.filter((movie) => movie.id >= 501 && movie.id <= 515)
 )
 
 const carouselFavoriteMovies = computed(() =>
-    store.movies.filter((movie) => movie.id >= 31 && movie.id <= 45)
+    store.movies.filter((movie) => movie.id >= 516 && movie.id <= 530)
 )
 
 const carouselComedyMovies = computed(() =>
-    store.movies.filter((movie) => movie.genre.toLowerCase().split(',').map(g => g.trim()).includes('комедия')
+    store.movies.filter((movie) => movie.genres.toLowerCase().split(',').map(g => g.trim()).includes('комедия')
 ))
 
 const carouselActionMovies = computed(() =>
-    store.movies.filter((movie) => movie.genre.toLowerCase().split(',').map(g => g.trim()).includes('боевик')
+    store.movies.filter((movie) => movie.genres.toLowerCase().split(',').map(g => g.trim()).includes('боевик')
     ))
 
 const getPreferredGenre = (genreStr: string) => {

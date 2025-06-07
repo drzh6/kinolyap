@@ -42,22 +42,22 @@ onMounted(async () => {
             <div class='flex flex-row gap-10'>
               <NuxtLink :to="`/movies/${movie.id}`">
                 <div class='w-[110px]'>
-                  <img :src="movie.poster_url" alt='Poster' class='w-full object-cover rounded-xl'>
+                  <img :src="movie.posterUrl" alt='Poster' class='w-full object-cover rounded-xl'>
                 </div>
               </NuxtLink>
             </div>
             <div class='flex flex-col gap-2 pl-4'>
               <div class='flex flex-col gap-2'>
-                {{movie.title}}
+                {{movie.nameRu}}
                 <div class='flex fle-row text-white/70 text-xs gap-2'>
                   {{movie.year}}
                   <span>/</span>
-                  {{movie.director}}
+                  {{movie.directorNameEn}}
                 </div>
                 <div class='flex flex-row gap-4'>
                   <div class='flex flex-row items-center gap-1 text-xs'>
                     <NuxtIcon name='tabler:star-filled' class='size-3 text-warning'></NuxtIcon>
-                    <p>{{ movie.rating.toFixed(2) }}</p>
+                    <p>{{ movie.ratingKinopoisk }}</p>
                   </div>
                   <WatchlistButton :movieId='movie.id' class="w-6 h-6"/>
                   <FavoriteButton :movieId='movie.id' class="w-6 h-6"/>
