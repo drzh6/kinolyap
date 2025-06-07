@@ -24,6 +24,7 @@ def register():
     password = (data.get("password") or "").strip()
     login = (data.get("login") or "").strip()
     username = (data.get("username") or "").strip()
+    avatar = (data.get("avatar"))
 
     if not all([email, password, login, username]):
         return jsonify({"message": "Все поля обязательны"}), 400
@@ -37,13 +38,9 @@ def register():
         return jsonify({"message": "такой Login уже занят"}), 409
 
     hashed_password = generate_password_hash(password)
-    user = User(email=email,username=username,login=login,password=hashed_password)
+    user = User(email=email,username=username,login=login,password=hashed_password, avatar=avatar)
     db.session.add(user)
     db.session.commit()
-
-    login_user(user)
-    return jsonify({"message": "успешная регистрация"}), 201
-
 
     login_user(user)
     return jsonify({"message": "успешная регистрация"}), 201
