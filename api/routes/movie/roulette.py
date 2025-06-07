@@ -2,7 +2,8 @@ from flask import Blueprint, jsonify
 import random
 from flask_login import login_required, current_user
 
-from ..models import Movie, User
+from ...models import Movie, User
+
 roulette_bp = Blueprint("roulette", __name__, url_prefix="/api")
 
 # выбирает рандомный фильм из всех
