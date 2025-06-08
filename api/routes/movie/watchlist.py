@@ -8,18 +8,26 @@ from ...extensions import db
 watchlist_bp = Blueprint("watchlist", __name__, url_prefix="/api")
 
 
-# Добавляет и удаляет фильм из вочлиста
-@watchlist_bp.route("/add_remove_watchlist/<int:movie_id>")
+# Добавляет фильм в вочлист
+@watchlist_bp.route("/add_watchlist/<int:movie_id>")
 @login_required
 def add_remove_watchlist(movie_id):
     movie = Movie.query.get_or_404(movie_id)
-    if movie in current_user.watchlist:
+    if movie not in current_user.watchlist:
+        current_user.watchlist.append(movie)
+        db.session.commit()
+        return jsonify({"message": "Фильм добавлен в список"})
+    
+# Удаляет фильм из вотчлиста
+@watchlist_bp.route("/remove_watchlist/<int:movie_id>")
+@login_required
+def remove_watchlist(movie_id):
+    movie = Movie.query.get_or_404(movie_id)
+    if movie in current_user.watchlsit:
         current_user.watchlist.remove(movie)
         db.session.commit()
         return jsonify({"message": "Фильм удален из списка"})
-    current_user.watchlist.append(movie)
-    db.session.commit()
-    return jsonify({"message": "Фильм добавлен в список"})
+
 
 # Проверка добовлен ли в watchlist
 @watchlist_bp.route("/is_watchlist/<int:movie_id>", methods=["GET"])

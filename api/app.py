@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 from flask_cors import CORS
 
 from .models import User
-from .extensions import db, migrate, login_manager
+from .extensions import db, migrate, login_manager, cache
 from .routes import register_blueprints
 
 
@@ -20,6 +20,9 @@ app.config.update(
 )
 app.config["CORS_SUPPORTS_CREDENTIALS"] = True
 app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL")
+app.config['CACHE_TYPE'] = 'RedisCache'
+app.config['CACHE_TYPE'] = 'RedisCache'
+app.config['CACHE_REDIS_URL'] = os.getenv("REDIS_URL")
 
 CORS(
     app,
@@ -30,6 +33,7 @@ CORS(
 login_manager.init_app(app)
 db.init_app(app)
 migrate.init_app(app, db)
+cache.init_app(app)
 
 @login_manager.user_loader
 def load_user(user_id):
