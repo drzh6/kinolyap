@@ -57,3 +57,18 @@ def add_review(movie_id):
     db.session.add(review)
     db.session.commit()
     return jsonify({"message": "Отзыв оставлен"})
+
+# Удаляет отзыв (проверка чтобы другой бзер не могу удалить)
+@review_bp.route("/delete_review/<int:review_id>")
+@login_required
+def delete_review(review_id):
+    review = Review.query.get_or_404(review_id)
+
+    if not review:
+        return jsonify({"error": "Отзыв не найден"}), 404
+    if review.user_id != current_user.id:
+        return jsonify({"error": "Нет доступа"}), 403
+
+    db.session.delete(review)
+    db.session.commit()
+    return jsonify({"message":"Отзыв удален!"})
